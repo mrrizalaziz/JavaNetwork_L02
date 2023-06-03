@@ -18,10 +18,12 @@ public class Server {
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            // Read data from the client and send a response
-            String clientMessage = in.readLine();
-            System.out.println("Client sent: " + clientMessage);
-            out.println("Server received your message: " + clientMessage);
+            // Handle multiple client messages
+            String clientMessage;
+            while ((clientMessage = in.readLine()) != null) {
+                System.out.println("Client sent: " + clientMessage);
+                out.println("Server received your message: " + clientMessage);
+            }
 
             // Close the streams and sockets
             in.close();

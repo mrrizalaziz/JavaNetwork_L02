@@ -14,12 +14,25 @@ public class Client {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-            // Send a message to the server
+            // Send messages to the server
             out.println("Hello, server!");
 
-            // Read the response from the server
-            String serverResponse = in.readLine();
-            System.out.println("Server response: " + serverResponse);
+            // Loop to send multiple messages
+            while (true) {
+                BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
+                String message = userInput.readLine();
+
+                if (message.equalsIgnoreCase("exit")) {
+                    break; // Exit the loop if the user enters "exit"
+                }
+
+                // Send the message to the server
+                out.println(message);
+
+                // Read the response from the server
+                String serverResponse = in.readLine();
+                System.out.println("Server response: " + serverResponse);
+            }
 
             // Close the streams and socket
             in.close();
