@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -7,8 +8,9 @@ import java.net.Socket;
 public class Server {
     public static void main(String[] args) {
         try {
+            // Create a ServerSocket and specify a port number
             ServerSocket serverSocket = new ServerSocket(1234);
-            System.out.println("Server started. Waiting for clients...");
+            System.out.println("Server started. Waiting for a client...");
 
             // Wait for a client to connect
             Socket clientSocket = serverSocket.accept();
@@ -18,19 +20,19 @@ public class Server {
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            // Handle multiple client messages
-            String clientMessage;
-            while ((clientMessage = in.readLine()) != null) {
-                System.out.println("Client sent: " + clientMessage);
-                out.println("Server received your message: " + clientMessage);
-            }
+            // Read data from the client
+            String clientData = in.readLine();
+            System.out.println("Received from client: " + clientData);
 
-            // Close the streams and sockets
+            // Send a response back to the client
+            out.println("Message received!");
+
+            // Close the streams and socket
             in.close();
             out.close();
             clientSocket.close();
             serverSocket.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
